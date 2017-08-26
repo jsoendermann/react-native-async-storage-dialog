@@ -1,5 +1,7 @@
 import { AsyncStorage, Alert } from 'react-native'
 
+// TODO(jan): Add typings
+
 // TODO(jan): Sort by length
 export default async (showAlert = false) => {
   const contents = {}
