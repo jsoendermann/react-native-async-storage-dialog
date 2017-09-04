@@ -1,9 +1,6 @@
 import { AsyncStorage, Alert } from 'react-native'
 
-// TODO(jan): Add typings
-
-// TODO(jan): Sort by length
-export default async (showAlert = false) => {
+export const asyncStorageContentsAsObject = async () => {
   const contents = {}
   const keys = await AsyncStorage.getAllKeys()
   for (const key of keys) {
@@ -15,10 +12,21 @@ export default async (showAlert = false) => {
       contents[key] = itemString
     }
   }
+}
+
+export const logAsyncStorage = async () => {
+  const contents = await asyncStorageContentsAsObject()
   console.log('AsyncStorage contents: ', contents)
-  // TODO(jan): Think of a better way
+}
+
+// TODO(jan): Print length
+// TODO(jan): Sort by length
+export const showAsyncStorageAlert = () => {
   showAlert &&
     Alert.alert('AsyncStorage Contents', JSON.stringify(contents, null, 2), [
-      { text: 'Ok', onPress: () => {} },
+      {
+        text: 'Ok',
+        onPress: () => {},
+      },
     ])
 }
