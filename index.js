@@ -1,32 +1,15 @@
-import { AsyncStorage, Alert } from 'react-native'
+import { AsyncStorage } from 'react-native'
 
-export const asyncStorageContentsAsObject = async () => {
-  const contents = {}
+export default async () => {
   const keys = await AsyncStorage.getAllKeys()
-  for (const key of keys) {
-    const itemString = await AsyncStorage.getItem(key)
+  const array = await AsyncStorage.multiGet(keys)
+  const obj = {}
+  array.sort((a, b) => b[1].length - a[1].length).forEach(([key, value]) => {
     try {
-      const parsedItem = JSON.parse(itemString)
-      contents[key] = parsedItem
+      obj[key] = JSON.parse(value)
     } catch (e) {
-      contents[key] = itemString
+      obj[key] = value
     }
-  }
-}
-
-export const logAsyncStorage = async () => {
-  const contents = await asyncStorageContentsAsObject()
-  console.log('AsyncStorage contents: ', contents)
-}
-
-// TODO(jan): Print length
-// TODO(jan): Sort by length
-export const showAsyncStorageAlert = () => {
-  showAlert &&
-    Alert.alert('AsyncStorage Contents', JSON.stringify(contents, null, 2), [
-      {
-        text: 'Ok',
-        onPress: () => {},
-      },
-    ])
+  })
+  console.log(obj)
 }
